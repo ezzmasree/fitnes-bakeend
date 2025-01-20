@@ -21,6 +21,13 @@ const productSchema = new mongoose.Schema({
   weight: Number,
   role: String,
   vedios: { type: [String], default: [] },
+  Saturday: { type: [String], default: [] },
+  Sunday: { type: [String], default: [] },
+  Monday: { type: [String], default: [] },
+  Tuesday: { type: [String], default: [] },
+  Wednesday: { type: [String], default: [] },
+  Thursday: { type: [String], default: [] },
+  Friday: { type: [String], default: [] },
   token:String,
 
   fitnes: [[String]], // Array of arrays (to match your JSON structure)

@@ -356,29 +356,32 @@ app.get("/raed", async (req, res) => {
 app.post("/pro/:id/add-video", async (req, res) => {
   const userId = req.params.id; // User's email or ID
   const videoId = req.body.videoId; // Video's ID
+  const day = req.body.day; // Selected day
 
   try {
-    // Find the user by email (or change to another unique identifier)
+    // Find the user by email (or another unique identifier)
     const user = await Product.findOne({ email: userId });
     if (!user) {
       return res.status(404).json({ message: "User not found!" });
     }
 
-    // Add the video ID to the vedios array if not already present
-    if (!user.vedios.includes(videoId)) {
-      user.vedios.push(videoId);
+     // Add the video ID to the vedios array if not already present
+     if (!user[day].includes(videoId)) {
+      console.log()
+      user[day].push(videoId);
       await user.save();
     }
 
     res
       .status(200)
-      .json({ message: "Video added successfully!", vedios: user.vedios });
+      .json({ message: "Video added successfully! abood", vedios: user[day] });
   } catch (err) {
     res
       .status(500)
       .json({ message: "Error updating vedios", error: err.message });
   }
 });
+
 
 /////////////////////
 

@@ -197,28 +197,32 @@ app.put("/profile/:id", async (req, res) => {
   }
 });
 ////// delet item vedios
-app.delete("/pro/delete/:userId/:videoId", async (req, res) => {
-  const { userId, videoId } = req.params;
+app.delete("/pro/delete/:userId/:videoId/:day", async (req, res) => {
+  const { userId, videoId, day } = req.params;
 
   try {
+    // Verify `day` is a valid key
+    const allowedDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    if (!allowedDays.includes(day)) {
+      return res.status(400).json({ message: "Invalid day provided." });
+    }
+
+    // Update the database
     const user = await Product.findOneAndUpdate(
       { email: userId },
-      { $pull: { vedios: videoId } },
+      { $pull: { [day]: videoId } },
       { new: true }
     );
 
     if (user) {
       res.status(200).json({ message: "Video deleted successfully.", user });
     } else {
-      res
-        .status(404)
-        .json({ message: "User not found or video not associated." });
+      res.status(404).json({ message: "User not found or video not associated." });
     }
   } catch (error) {
     res.status(500).json({ message: "Server error.", error });
   }
 });
-
 ////// sign up
 app.post("/users", async (req, res) => {
   try {
